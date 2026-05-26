@@ -1,0 +1,7 @@
+balance_data: true
+batch_size: 128
+data_dir: /lyman/data1/rb_classification_meta/data/norm_snapshot
+learning_rate: 0.001
+model_name: efficientnet_b0
+num_workers: 10
+pos_weight: 1.0

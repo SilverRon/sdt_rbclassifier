@@ -1,0 +1,44 @@
+# Large raw data (hundreds of MB to GB each)
+data/raw/
+data/norm_snapshot/
+data/stacked_meta/
+data/ref_cat/
+data/selection/
+data/feature_eng/
+
+# Full training data tables (too large; see data/meta_sample50.csv for example rows)
+data/meta.csv
+data/meta_random_injection.csv
+data/meta_near_galaxy_injection-v1.0.csv
+
+# Snapshot model checkpoints and large prediction CSVs (~50-334 MB each)
+output/snapshot/checkpoints/
+output/snapshot/results/
+
+# Large trained models (Random Forest ~192 MB)
+output/meta/m1_rf_baseline/model.pkl
+output/meta/smoke_test_rf/model.pkl
+
+# CatBoost training artifacts
+catboost_info/
+
+# Internal agent files
+.agent/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.env
+.venv/
+venv/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db

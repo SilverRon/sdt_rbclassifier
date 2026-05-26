@@ -1,0 +1,14 @@
+{
+    "model": "lgbm",
+    "version": "m1_lgbm_cpu",
+    "data_dir": "/lyman/data1/rb_classification_meta/data/stacked_meta",
+    "tune": "false",
+    "n_trials": 20,
+    "split_by": "tile",
+    "balance": true,
+    "device": "cpu",
+    "n_workers": 10,
+    "seed": 42,
+    "max_epochs": 20,
+    "batch_size": 256
+}

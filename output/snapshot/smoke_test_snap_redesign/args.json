@@ -1,0 +1,11 @@
+{
+    "version": "smoke_test_snap_redesign",
+    "model": "simplecnn",
+    "data_dir": "/lyman/data1/rb_classification_meta/data/norm_snapshot",
+    "batch_size": 128,
+    "lr": 0.001,
+    "max_epochs": 1,
+    "num_workers": 4,
+    "fast_dev_run": true,
+    "balance_data": false
+}

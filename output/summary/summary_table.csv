@@ -1,0 +1,14 @@
+run_id,model_family,model_type,version,accuracy,auroc,f1_macro,f1_real,f1_bogus,test_acc,test_auroc,test_f1,test_prec,test_rec,val_acc,val_auroc,val_f1,split_by,balance,device,tune,n_trials,batch_size,max_epochs,seed,n_features,learning_rate,val_loss,test_loss,optimal_threshold,test_avg_precision
+m1_cat_gpu,meta,cat,m1_cat_gpu,0.9898478205445855,0.9858368729548617,0.9739414259212154,0.9943006489569669,0.9535822028854639,,,,,,,,,tile,True,gpu,false,20.0,256,20,42.0,35.0,,,,,
+m1_lgbm_cpu,meta,lgbm,m1_lgbm_cpu,0.9895964623124239,0.983526617253233,0.9733729027828,0.9941571828233577,0.9525886227422423,,,,,,,,,tile,True,cpu,false,20.0,256,20,42.0,35.0,,,,,
+m1_lgbm_gpu,meta,lgbm,m1_lgbm_gpu,,,,,,,,,,,,,,tile,True,gpu,false,20.0,256,20,42.0,35.0,,,,,
+m1_mlp_gpu,meta,mlp,m1_mlp_gpu,0.9896386545871082,0.9755548426796627,0.973434472666782,0.9941823071975677,0.9526866381359962,,,,,,,,,tile,False,gpu,false,20.0,1024,50,42.0,35.0,,,,,
+m1_rf_baseline,meta,rf,m1_rf_baseline,0.9903029584863925,0.9828743368353967,0.9751319640189554,0.9945554764789729,0.9557084515589379,,,,,,,,,tile,True,cpu,false,20.0,256,20,42.0,35.0,,,,,
+m1_xgb_tuned,meta,xgb,m1_xgb_tuned,0.9893262522128502,0.9846650032345848,0.9726800457772085,0.9940054671752693,0.9513546243791475,,,,,,,,,tile,True,gpu,false,20.0,256,20,42.0,35.0,,,,,
+smoke_test_meta_redesign,meta,rf,smoke_test_meta_redesign,0.965,0.9934160000000001,0.9649744663859954,0.9659201557935735,0.9640287769784173,,,,,,,,,tile,False,cpu,false,20.0,256,20,42.0,35.0,,,,,
+smoke_test_rf,meta,rf,smoke_test_rf,0.9903029584863925,0.9828743368353967,0.9751319640189554,0.9945554764789729,0.9557084515589379,,,,,,,,,tile,True,cpu,false,20.0,256,20,42.0,35.0,,,,,
+test_cpu,meta,rf,test_cpu,,,,,,,,,,,,,,tile,False,cpu,false,20.0,256,20,42.0,35.0,,,,,
+test_fix,meta,xgb,test_fix,0.979,0.9973720000000001,0.9789907349140972,0.9794319294809011,0.9785495403472931,,,,,,,,,tile,True,gpu,false,20.0,256,20,42.0,35.0,,,,,
+test_fix_v2,meta,mlp,test_fix_v2,0.5,0.16986,0.3333333333333333,0.6666666666666666,0.0,,,,,,,,,tile,False,gpu,false,20.0,256,20,42.0,35.0,,,,,
+test_gpu_mlp,meta,mlp,test_gpu_mlp,0.5,0.16986,0.3333333333333333,0.6666666666666666,0.0,,,,,,,,,tile,False,gpu,false,20.0,256,20,42.0,35.0,,,,,
+v2_resnet,snapshot,unknown_cnn,v2_resnet,0.9979361295700073,0.9976179218841008,0.9989032745361328,,,0.9979361295700073,0.9976179218841008,0.9989032745361328,0.9993752241134644,0.9984317421913147,0.0,0.0,0.0,,True,,,,128,50,,,0.001,0.0,0.022083889693021774,0.11,0.9997719165464081

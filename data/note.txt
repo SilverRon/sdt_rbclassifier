@@ -1,0 +1,12 @@
+# Note
+
+데이터셋마다 포맷이 달라서 제가 가공을 하여 사용했었습니다. 가공 전후 기준으로 경로는 다음과 같습니다. 가공 후 데이터는 snapshot 경로 외 다른 정보가 없을 수도 있습니다.
+
+훈련 데이터 (PSF Injection) 가공 전
+RI: /data0/Postech/data/injected_psf_kmtnet_20230925/csv/transient_meta_table.csv
+NGI: /data0/PSF_INJECTION_NGI/real.csv , /data0/PSF_INJECTION_NGI/bogus.csv
+
+훈련 데이터 (PSF Injection) 가공 후: 훈련에 직접 사용한 메타 테이블
+- RI: /home/postech/projects/kmtnet/data/meta_random_injection.csv
+- NGI: /home/postech/projects/kmtnet/data/meta_near_galaxy_injection-v1.0.csv
+- Test sample: /data0/Postech/data/test/meta.csv

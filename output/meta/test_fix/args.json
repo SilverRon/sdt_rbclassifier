@@ -1,0 +1,15 @@
+{
+    "model": "xgb",
+    "version": "test_fix",
+    "data_dir": "/lyman/data1/rb_classification_meta/data/stacked_meta",
+    "tune": "false",
+    "n_trials": 20,
+    "split_by": "tile",
+    "balance": true,
+    "device": "gpu",
+    "n_workers": 4,
+    "seed": 42,
+    "max_epochs": 20,
+    "batch_size": 256,
+    "smoke_test": true
+}

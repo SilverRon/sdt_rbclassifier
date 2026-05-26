@@ -1,0 +1,185 @@
+# First Test Run
+python script/04_Train_Test_Validate_Snapshots.py \
+	--version v1 \
+	--balance_data \
+	--batch_size 1024 \
+	--lr 1e-3 \
+	--max_epochs 10 \
+	--num_workers 10
+
+# Second Test Run (Batch 512, lr 3e-4)
+python script/04_Train_Test_Validate_Snapshots.py \
+	--version v2A_bal_bs512_lr3e4 \
+	--balance_data \
+	--batch_size 512 \
+	--lr 3e-4 \
+	--max_epochs 10 \
+	--num_workers 10
+
+# Third Test Run (Batch 1024, lr 1e-4)
+python script/04_Train_Test_Validate_Snapshots.py \
+	--version v2B_bal_bs1024_lr1e4 \
+	--balance_data \
+	--batch_size 1024 \
+	--lr 1e-4 \
+	--max_epochs 10 \
+	--num_workers 10
+
+# Fourth Test Run (Imbalanced Data, Batch 512, lr 3e-4)
+python script/04_Train_Test_Validate_Snapshots.py \
+	--version v2C_imbal_bs512_lr3e4 \
+	--batch_size 512 \
+	--lr 3e-4 \
+	--max_epochs 10 \
+	--num_workers 10
+
+
+# v3 Experiments: Benchmark all available models (Balanced Data, 20 Epochs)
+# Each model is trained with --balance_data, --max_epochs 20, --num_workers 10
+
+# SimpleCNN
+python script/04_Train_Test_Validate_Snapshots.py \
+--model simplecnn \
+--version v3_simplecnn \
+--balance_data \
+--max_epochs 20 \
+--num_workers 10
+
+# ResNet-18
+python script/04_Train_Test_Validate_Snapshots.py \
+--model resnet18 \
+--version v3_resnet18 \
+--balance_data \
+--max_epochs 20 \
+--num_workers 10
+
+# ResNet-34
+python script/04_Train_Test_Validate_Snapshots.py \
+--model resnet34 \
+--version v3_resnet34 \
+--balance_data \
+--max_epochs 20 \
+--num_workers 10
+
+# ResNet-50
+python script/04_Train_Test_Validate_Snapshots.py \
+--model resnet50 \
+--version v3_resnet50 \
+--balance_data \
+--max_epochs 20 \
+--num_workers 10
+
+# EfficientNet-B0
+python script/04_Train_Test_Validate_Snapshots.py \
+--model efficientnet_b0 \
+--version v3_efficientnet_b0 \
+--balance_data \
+--max_epochs 20 \
+--num_workers 10
+
+# EfficientNet-B1
+python script/04_Train_Test_Validate_Snapshots.py \
+--model efficientnet_b1 \
+--version v3_efficientnet_b1 \
+--balance_data \
+--max_epochs 20 \
+--num_workers 10
+
+# ConvNeXt-Tiny
+python script/04_Train_Test_Validate_Snapshots.py \
+--model convnext_tiny \
+--version v3_convnext_tiny \
+--balance_data \
+--max_epochs 20 \
+--num_workers 10
+
+# MobileNetV3-Small
+python script/04_Train_Test_Validate_Snapshots.py \
+--model mobilenet_v3_small \
+--version v3_mobilenet_v3_small \
+--balance_data \
+--max_epochs 20 \
+--num_workers 10
+
+# MobileNetV3-Large
+python script/04_Train_Test_Validate_Snapshots.py \
+--model mobilenet_v3_large \
+--version v3_mobilenet_v3_large \
+--balance_data \
+--max_epochs 20 \
+--num_workers 10
+
+# ShuffleNetV2
+python script/04_Train_Test_Validate_Snapshots.py \
+--model shufflenet_v2 \
+--version v3_shufflenet_v2 \
+--balance_data \
+--max_epochs 20 \
+--num_workers 10
+
+# O'TRAIN CNN
+python script/04_Train_Test_Validate_Snapshots.py \
+--model otrain \
+--version v3_otrain \
+--balance_data \
+--max_epochs 20 \
+--num_workers 10
+
+
+# ==============================================================================
+# TABULAR (META) MODEL TRAINING: script/04_Train_Test_Validate_Metas.py
+# ==============================================================================
+
+# 1. RandomForest - Baseline (CPU, Balanced)
+python script/04_Train_Test_Validate_Metas.py \
+    --model rf \
+    --version m1_rf_baseline \
+	--device gpu \
+    --balance 
+    # --balance \
+    # --n_workers 10
+
+# 2. XGBoost - Tuned (CPU, Random Split)
+python script/04_Train_Test_Validate_Metas.py \
+    --model xgb \
+    --version m1_xgb_tuned \
+	--device gpu \
+    --balance 
+    # --balance \
+    # --n_workers 10
+    # --n_trials 50 \
+    # --split_by random \
+    # --tune true \
+
+# 3. LightGBM - GPU (Balanced)
+python script/04_Train_Test_Validate_Metas.py \
+    --model lgbm \
+    --version m1_lgbm_cpu \
+    --n_workers 10 \
+    --balance
+
+# 4. CatBoost - GPU & Tuned (Tile Split)
+python script/04_Train_Test_Validate_Metas.py \
+    --model cat \
+    --version m1_cat_gpu \
+    --device gpu \
+    --balance
+    # --split_by tile \
+    # --tune true \
+    # --n_trials 30
+
+# 5. MLP (PyTorch Lightning) - Deep Learning approach for Tabular
+python script/04_Train_Test_Validate_Metas.py \
+    --model mlp \
+    --version m1_mlp_gpu \
+    --device gpu \
+    --max_epochs 50 \
+    --batch_size 1024
+
+# 6. IsolationForest - Anomaly Detection / Outlier approach
+python script/04_Train_Test_Validate_Metas.py \
+    --model iso \
+    --version m1_iso_anomaly \
+    --balance \
+	--device gpu \
+    --n_workers 10

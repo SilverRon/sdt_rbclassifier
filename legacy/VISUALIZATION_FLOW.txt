@@ -1,0 +1,187 @@
+# Visualization Module - Flow Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    TRAINING SCRIPT EXECUTION FLOW                        │
+└─────────────────────────────────────────────────────────────────────────┘
+
+  User runs:
+  python script/04_Train_Test_Validate_Snapshots.py --version v1 --balance_data
+
+                              ↓
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│  EXISTING PIPELINE (UNCHANGED)                                           │
+├─────────────────────────────────────────────────────────────────────────┤
+│  1. Initialize Data Module                                               │
+│     - Load train/val/test datasets                                       │
+│     - Apply balancing (if --balance_data)                                │
+│     - Calculate pos_weight                                               │
+│                                                                           │
+│  2. Initialize Model                                                     │
+│     - Create SimpleCNN                                                   │
+│     - Setup loss function with pos_weight                                │
+│     - Initialize metrics                                                 │
+│                                                                           │
+│  3. Setup Callbacks                                                      │
+│     - ModelCheckpoint (save best model)                                  │
+│     - EarlyStopping (patience=10)                                        │
+│     - LearningRateMonitor                                                │
+│                                                                           │
+│  4. Setup Logger                                                         │
+│     - TensorBoardLogger                                                  │
+│                                                                           │
+│  5. Create Trainer                                                       │
+│     - Configure accelerator, devices, callbacks                          │
+│                                                                           │
+│  6. Training (trainer.fit)                                               │
+│     - Train for max_epochs                                               │
+│     - Log train_loss, train_acc                                          │
+│     - Log val_loss, val_acc, val_f1, val_auroc                           │
+│     - Save best checkpoint                                               │
+│                                                                           │
+│  7. Testing (trainer.test)                                               │
+│     - Load best checkpoint                                               │
+│     - Evaluate on test set                                               │
+│     - Log test_loss, test_acc, test_f1, test_prec, test_rec, test_auroc │
+└─────────────────────────────────────────────────────────────────────────┘
+
+                              ↓
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│  NEW: VISUALIZATION MODULE (ADDED)                                       │
+├─────────────────────────────────────────────────────────────────────────┤
+│  8. Visualize Results (if not --fast_dev_run)                            │
+│                                                                           │
+│     ┌───────────────────────────────────────────────────────────┐       │
+│     │  visualize_training_results(trainer, model, dm, args)     │       │
+│     └───────────────────────────────────────────────────────────┘       │
+│                              ↓                                            │
+│     ┌───────────────────────────────────────────────────────────┐       │
+│     │  ResultsVisualizer(version, output_base)                  │       │
+│     └───────────────────────────────────────────────────────────┘       │
+│                              ↓                                            │
+│     ┌───────────────────────────────────────────────────────────┐       │
+│     │  Collect Predictions                                      │       │
+│     │  - Run model on val_dataloader → y_true_val, y_score_val  │       │
+│     │  - Run model on test_dataloader → y_true_test, y_score_test│      │
+│     └───────────────────────────────────────────────────────────┘       │
+│                              ↓                                            │
+│     ┌───────────────────────────────────────────────────────────┐       │
+│     │  Find Optimal Threshold                                   │       │
+│     │  - Grid search over [0, 1] with 101 points                │       │
+│     │  - Maximize F1 score on validation set                    │       │
+│     │  - optimal_threshold = argmax(F1)                         │       │
+│     └───────────────────────────────────────────────────────────┘       │
+│                              ↓                                            │
+│     ┌───────────────────────────────────────────────────────────┐       │
+│     │  Generate Plots (9 total)                                 │       │
+│     │                                                            │       │
+│     │  Learning Curves:                                         │       │
+│     │    ✓ learning_curves.png                                  │       │
+│     │                                                            │       │
+│     │  ROC Curves:                                              │       │
+│     │    ✓ roc_curve_test.png (AUROC annotated)                 │       │
+│     │    ✓ roc_curve_val.png (AUROC annotated)                  │       │
+│     │                                                            │       │
+│     │  Precision-Recall Curves:                                 │       │
+│     │    ✓ pr_curve_test.png (AP annotated)                     │       │
+│     │    ✓ pr_curve_val.png (AP annotated)                      │       │
+│     │                                                            │       │
+│     │  Confusion Matrices:                                      │       │
+│     │    ✓ confusion_matrices_test.png (2 thresholds)           │       │
+│     │    ✓ confusion_matrices_val.png (2 thresholds)            │       │
+│     │                                                            │       │
+│     │  Probability Histograms:                                  │       │
+│     │    ✓ probability_histogram_test.png                       │       │
+│     │    ✓ probability_histogram_val.png                        │       │
+│     │                                                            │       │
+│     │  All saved to: output/plots/{version}/                    │       │
+│     └───────────────────────────────────────────────────────────┘       │
+│                              ↓                                            │
+│     ┌───────────────────────────────────────────────────────────┐       │
+│     │  Generate Reports (2 total)                               │       │
+│     │                                                            │       │
+│     │  JSON Summary:                                            │       │
+│     │    ✓ metrics.json                                         │       │
+│     │      - version, hyperparameters                           │       │
+│     │      - best_checkpoint path                               │       │
+│     │      - all metrics (val + test)                           │       │
+│     │      - optimal_threshold                                  │       │
+│     │      - output_paths                                       │       │
+│     │                                                            │       │
+│     │  Markdown Report:                                         │       │
+│     │    ✓ report.md                                            │       │
+│     │      - Configuration summary                              │       │
+│     │      - Validation metrics                                 │       │
+│     │      - Test metrics                                       │       │
+│     │      - List of generated plots                            │       │
+│     │                                                            │       │
+│     │  All saved to: output/results/{version}/                  │       │
+│     └───────────────────────────────────────────────────────────┘       │
+└─────────────────────────────────────────────────────────────────────────┘
+
+                              ↓
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│  FINAL OUTPUT STRUCTURE                                                  │
+├─────────────────────────────────────────────────────────────────────────┤
+│  output/                                                                 │
+│  ├── checkpoints/{version}/                                              │
+│  │   └── rb-classifier-{epoch:02d}-{val_loss:.2f}.ckpt                  │
+│  ├── logs/{version}/                                                     │
+│  │   └── [TensorBoard event files]                                      │
+│  ├── plots/{version}/                          ← NEW                    │
+│  │   ├── learning_curves.png                   ← NEW                    │
+│  │   ├── roc_curve_test.png                    ← NEW                    │
+│  │   ├── roc_curve_val.png                     ← NEW                    │
+│  │   ├── pr_curve_test.png                     ← NEW                    │
+│  │   ├── pr_curve_val.png                      ← NEW                    │
+│  │   ├── confusion_matrices_test.png           ← NEW                    │
+│  │   ├── confusion_matrices_val.png            ← NEW                    │
+│  │   ├── probability_histogram_test.png        ← NEW                    │
+│  │   └── probability_histogram_val.png         ← NEW                    │
+│  └── results/{version}/                        ← NEW                    │
+│      ├── metrics.json                          ← NEW                    │
+│      └── report.md                             ← NEW                    │
+└─────────────────────────────────────────────────────────────────────────┘
+
+                              ↓
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│  USER ACTIONS                                                            │
+├─────────────────────────────────────────────────────────────────────────┤
+│  1. View plots:                                                          │
+│     $ ls output/plots/v1/                                                │
+│     $ open output/plots/v1/roc_curve_test.png                            │
+│                                                                           │
+│  2. Read report:                                                         │
+│     $ cat output/results/v1/report.md                                    │
+│                                                                           │
+│  3. Analyze metrics:                                                     │
+│     $ python script/analyze_results.py v1                                │
+│                                                                           │
+│  4. Compare experiments:                                                 │
+│     $ python script/analyze_results.py                                   │
+│                                                                           │
+│  5. Access programmatically:                                             │
+│     >>> import json                                                      │
+│     >>> metrics = json.load(open('output/results/v1/metrics.json'))      │
+│     >>> print(metrics['metrics']['test_auroc'])                          │
+└─────────────────────────────────────────────────────────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════════════════
+KEY POINTS
+═══════════════════════════════════════════════════════════════════════════
+
+✓ ZERO changes to existing training pipeline (steps 1-7)
+✓ Visualization is ADDITIVE ONLY (step 8)
+✓ Automatically runs after testing completes
+✓ Skipped in --fast_dev_run mode
+✓ All outputs saved to disk (no external services)
+✓ Publication-quality plots (200 DPI)
+✓ Comprehensive metrics and reports
+✓ Easy programmatic access via JSON
+
+═══════════════════════════════════════════════════════════════════════════

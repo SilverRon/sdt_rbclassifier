@@ -1,0 +1,6 @@
+balance_data: true
+batch_size: 512
+data_dir: /lyman/data1/rb_classification_meta/data/norm_snapshot
+learning_rate: 0.0003
+num_workers: 10
+pos_weight: 1.0
