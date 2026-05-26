@@ -1,3 +1,11 @@
+# PSFEx run artifacts (large FITS/catalog files, keep only .param/.sex/.conv/.nnw)
+config/PSFEx/*.fits
+config/PSFEx/*.cat
+config/PSFEx/run_*/
+config/PSFEx/*.psf
+config/PSFEx/*.xml
+config/PSFEx/*.png
+
 # Large raw data (hundreds of MB to GB each)
 data/raw/
 data/norm_snapshot/
@@ -14,6 +22,8 @@ data/meta_near_galaxy_injection-v1.0.csv
 # Snapshot model checkpoints and large prediction CSVs (~50-334 MB each)
 output/snapshot/checkpoints/
 output/snapshot/results/
+# TensorBoard event files (binary, large)
+output/snapshot/logs/**/*.tfevents.*
 
 # Large trained models (Random Forest ~192 MB)
 output/meta/m1_rf_baseline/model.pkl
@@ -24,6 +34,10 @@ catboost_info/
 
 # Internal agent files
 .agent/
+
+# Per-tile individual catalog files in split (keep only summary.csv)
+data/split/*/sci/
+data/split/*/sub/
 
 # Python
 __pycache__/
